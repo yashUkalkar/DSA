@@ -3,6 +3,7 @@
 using namespace std;
 
 //* Link -
+//* https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
 
 //* HELPERS
 struct TreeNode {
@@ -17,19 +18,41 @@ struct TreeNode {
 
 TreeNode *createBinaryTree(vector<string> &vec, int i, int n);
 void displayTree(TreeNode *root);
+TreeNode *findNodeInBST(TreeNode *root, int val);
 
 //! ==============================================================
 
 //* SOLUTION
+TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+    while (root) {
+        if (root->val < p->val && root->val < q->val)
+            root = root->right;
+        else if (root->val > p->val && root->val > q->val)
+            root = root->left;
+        else
+            break;
+    }
+    return root;
+}
 
 //* Driver code
 int main() {
-    vector<string> nums = {"4", "2", "7", "null", "3", "6", "null"};
+    vector<string> nums = {"6", "2",    "8",    "0", "4", "7",
+                           "9", "null", "null", "3", "5"};
+    int p = 2;
+    int q = 8;
 
     TreeNode *root = createBinaryTree(nums, 0, nums.size());
     cout << "Given Tree -> \n\n";
     displayTree(root);
     cout << endl;
+
+    TreeNode *pNode = findNodeInBST(root, p);
+    TreeNode *qNode = findNodeInBST(root, q);
+
+    TreeNode *ancestor = lowestCommonAncestor(root, pNode, qNode);
+
+    cout << ancestor->val;
 
     return 0;
 }
@@ -50,6 +73,14 @@ TreeNode *createBinaryTree(vector<string> &vec, int i, int n) {
     }
 
     return root;
+}
+
+TreeNode *findNodeInBST(TreeNode *root, int val) {
+    if (!root || root->val == val) return root;
+
+    if (root->val < val) return findNodeInBST(root->right, val);
+
+    return findNodeInBST(root->left, val);
 }
 
 //* Displaying tree

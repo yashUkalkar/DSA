@@ -1,8 +1,9 @@
 #include <iostream>
+#include <queue>
 #include <vector>
 using namespace std;
 
-//* Link -
+//* Link - https://leetcode.com/problems/binary-tree-right-side-view/
 
 //* HELPERS
 struct TreeNode {
@@ -21,15 +22,46 @@ void displayTree(TreeNode *root);
 //! ==============================================================
 
 //* SOLUTION
+vector<int> rightSideView(TreeNode *root) {
+    vector<int> res;
+    queue<TreeNode *> q;
+
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode *rightSide = nullptr;
+        int qSize = q.size();
+
+        for (int i = 0; i < qSize; i++) {
+            TreeNode *node = q.front();
+            q.pop();
+
+            if (node) {
+                rightSide = node;
+                q.push(node->left);
+                q.push(node->right);
+            }
+        }
+
+        if (rightSide) res.push_back(rightSide->val);
+    }
+
+    return res;
+}
 
 //* Driver code
 int main() {
-    vector<string> nums = {"4", "2", "7", "null", "3", "6", "null"};
+    vector<string> nums = {"1", "2", "3", "null", "5", "null", "4"};
 
     TreeNode *root = createBinaryTree(nums, 0, nums.size());
     cout << "Given Tree -> \n\n";
     displayTree(root);
     cout << endl;
+
+    vector<int> res = rightSideView(root);
+    cout << "Right side view nodes = [ ";
+    for (auto i : res) cout << i << ", ";
+    cout << "]\n";
 
     return 0;
 }

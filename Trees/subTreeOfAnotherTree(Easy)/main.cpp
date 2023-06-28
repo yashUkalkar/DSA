@@ -21,15 +21,43 @@ void displayTree(TreeNode *root);
 //! ==============================================================
 
 //* SOLUTION
+bool isSameTree(TreeNode *p, TreeNode *q) {
+    if (!p && !q) return true;
 
-//* Driver code
+    if (p && q && (p->val == q->val)) {
+        return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+    }
+
+    return false;
+}
+bool isSubtree(TreeNode *root, TreeNode *subRoot) {
+    if (!subRoot) return true;
+    if (!root) return false;
+
+    if (isSameTree(root, subRoot)) return true;
+
+    return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+}
+
 int main() {
-    vector<string> nums = {"4", "2", "7", "null", "3", "6", "null"};
+    vector<string> nums1 = {"3", "4", "5", "1", "2"};
+    vector<string> nums2 = {"4", "1", "2"};
 
-    TreeNode *root = createBinaryTree(nums, 0, nums.size());
-    cout << "Given Tree -> \n\n";
+    TreeNode *root = createBinaryTree(nums1, 0, nums1.size());
+    TreeNode *subRoot = createBinaryTree(nums2, 0, nums2.size());
+
+    cout << "Main Tree -> \n\n";
     displayTree(root);
     cout << endl;
+
+    cout << "Sub Tree -> \n\n";
+    displayTree(subRoot);
+    cout << endl;
+
+    if (isSubtree(root, subRoot))
+        cout << "True";
+    else
+        cout << "False";
 
     return 0;
 }

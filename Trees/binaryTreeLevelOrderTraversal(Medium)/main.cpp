@@ -1,8 +1,9 @@
 #include <iostream>
+#include <queue>
 #include <vector>
 using namespace std;
 
-//* Link -
+//* Link - https://leetcode.com/problems/binary-tree-level-order-traversal/
 
 //* HELPERS
 struct TreeNode {
@@ -21,15 +22,48 @@ void displayTree(TreeNode *root);
 //! ==============================================================
 
 //* SOLUTION
+vector<vector<int>> levelOrder(TreeNode *root) {
+    vector<vector<int>> res;
+    queue<TreeNode *> q;
+
+    q.push(root);
+
+    while (!q.empty()) {
+        vector<int> levelList;
+        int qSize = q.size();
+        for (int i = 0; i < qSize; i++) {
+            TreeNode *node = q.front();
+            q.pop();
+
+            if (node) {
+                levelList.push_back(node->val);
+                q.push(node->left);
+                q.push(node->right);
+            }
+        }
+        if (!levelList.empty()) res.push_back(levelList);
+    }
+
+    return res;
+}
 
 //* Driver code
 int main() {
-    vector<string> nums = {"4", "2", "7", "null", "3", "6", "null"};
+    vector<string> nums = {"3", "9", "20", "null", "null", "15", "7"};
 
     TreeNode *root = createBinaryTree(nums, 0, nums.size());
     cout << "Given Tree -> \n\n";
     displayTree(root);
     cout << endl;
+
+    vector<vector<int>> res = levelOrder(root);
+    cout << "Level order : [ ";
+    for (auto i : res) {
+        cout << "[";
+        for (auto j : i) cout << j << ",";
+        cout << "] ";
+    }
+    cout << "]\n";
 
     return 0;
 }
