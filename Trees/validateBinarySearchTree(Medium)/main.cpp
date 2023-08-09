@@ -24,16 +24,17 @@ void displayTree(TreeNode *root);
 bool validNode(TreeNode *root, int leftBound, int rightBound) {
     if (!root) return true;
 
-    if (root->val < leftBound || root->val > rightBound) return false;
+    if (root->val <= leftBound && root->val >= rightBound) return false;
 
     return validNode(root->left, leftBound, root->val) &&
            validNode(root->right, root->val, rightBound);
 }
-bool isValidBST(TreeNode *root) { return validNode(root, INT_MIN, INT_MAX); }
+bool isValidBST(TreeNode *root) { return validNode(root, LONG_MIN, LONG_MAX); }
 
 //* Driver code
 int main() {
-    vector<string> nums = {"6", "3", "9", "2", "5", "7", "11"};
+    // vector<string> nums = {"6", "3", "9", "2", "5", "7", "11"};
+    vector<string> nums = {"2147483647"};
 
     TreeNode *root = createBinaryTree(nums, 0, nums.size());
     cout << "Given Tree -> \n\n";
