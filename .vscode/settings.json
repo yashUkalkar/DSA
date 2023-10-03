@@ -3,6 +3,7 @@
     "*.css": "css",
     "*.svg": "html",
     "iostream": "cpp",
-    "new": "cpp"
+    "new": "cpp",
+    "vector": "cpp"
   }
 }
